@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "5d9c1b58-73c0-4fc1-962a-dbd75c4025f7",
+		"name": "1. Authentication",
+		"description": "This collection contains the APIs for obtaining the required security context for any subsequent FinClusive API call.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4698006"
+	},
+	"item": [
+		{
+			"name": "Get Access Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"var access_token = jsonData.access_token;\r",
+							"var token_type = jsonData.token_type;\r",
+							"var expires_in = jsonData.expires_in;\r",
+							"var refresh_token = jsonData.refresh_token;\r",
+							"var id_token = jsonData.id_token;\r",
+							"let jwt = parseJwt(access_token);\r",
+							"let customerFinClusiveID = jwt['extension_FinClusiveID'];\r",
+							"let customerName = jwt['name'];\r",
+							"let customerEmails = jwt['emails'];\r",
+							"let customerEmail = customerEmails[0];\r",
+							"\r",
+							"pm.environment.set(\"authAccessToken\", access_token);\r",
+							"pm.environment.set(\"authTokenType\", token_type);\r",
+							"pm.environment.set(\"authTokenExpiresIn\", expires_in);\r",
+							"pm.environment.set(\"authRefreshToken\", refresh_token);\r",
+							"pm.environment.set(\"authIdToken\", id_token);\r",
+							"pm.environment.set(\"customerFinClusiveID\", customerFinClusiveID);\r",
+							"pm.environment.set(\"customerName\", customerName);\r",
+							"pm.environment.set(\"customerEmail\", customerEmail);\r",
+							"\r",
+							"console.info(\"Access Token Acquired\");\r",
+							"\r",
+							"function parseJwt (token) {\r",
+							"    var base64Url = token.split('.')[1];\r",
+							"    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');\r",
+							"    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {\r",
+							"        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);\r",
+							"    }).join(''));\r",
+							"\r",
+							"    return JSON.parse(jsonPayload);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let username = '';\r",
+							"let password = '';\r",
+							"let subscriptionKey = '';\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.variables.set(\"authUser\", encodeURIComponent(username));\r",
+							"pm.variables.set(\"authPass\", encodeURIComponent(password));\r",
+							"pm.environment.set(\"finClusiveApimSubscriptionKey\", subscriptionKey);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{authBaseUrl}}?p={{authProtocol}}&username={{authUser}}&password={{authPass}}&grant_type=password&client_id={{authClientId}}&response_type=token id_token&scope=openid {{authClientId}} offline_access",
+					"host": [
+						"{{authBaseUrl}}"
+					],
+					"query": [
+						{
+							"key": "p",
+							"value": "{{authProtocol}}"
+						},
+						{
+							"key": "username",
+							"value": "{{authUser}}"
+						},
+						{
+							"key": "password",
+							"value": "{{authPass}}"
+						},
+						{
+							"key": "grant_type",
+							"value": "password"
+						},
+						{
+							"key": "client_id",
+							"value": "{{authClientId}}"
+						},
+						{
+							"key": "response_type",
+							"value": "token id_token"
+						},
+						{
+							"key": "scope",
+							"value": "openid {{authClientId}} offline_access"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

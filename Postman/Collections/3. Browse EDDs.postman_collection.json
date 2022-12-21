@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "407fbb95-e09b-4783-a879-11032c6f9c65",
+		"name": "3. Browse EDDs",
+		"description": "This collection contains the APIs for browsing my EDD orders",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4698006"
+	},
+	"item": [
+		{
+			"name": "Browse ALL My EDDs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/Order?CurrentPage=1&PageSize=10&Order=Desc(HappenedAt)",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"Order"
+					],
+					"query": [
+						{
+							"key": "CurrentPage",
+							"value": "1"
+						},
+						{
+							"key": "PageSize",
+							"value": "10"
+						},
+						{
+							"key": "Order",
+							"value": "Desc(HappenedAt)"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[OPTIONAL] Browse EDDs for specific Client (+its Sig. Parties)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let clientFinClusiveID = '';\r",
+							"\r",
+							"pm.variables.set(\"clientFinClusiveID\", encodeURIComponent(clientFinClusiveID));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/Order?CurrentPage=1&PageSize=10&Order=Desc(HappenedAt)&ClientFinClusiveID={{clientFinClusiveID}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"Order"
+					],
+					"query": [
+						{
+							"key": "CurrentPage",
+							"value": "1"
+						},
+						{
+							"key": "PageSize",
+							"value": "10"
+						},
+						{
+							"key": "Order",
+							"value": "Desc(HappenedAt)"
+						},
+						{
+							"key": "ClientFinClusiveID",
+							"value": "{{clientFinClusiveID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[OPTIONAL] Browse EDDs for specific Client's Sig. Party",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let clientFinClusiveID = '';\r",
+							"let significantPartyID = '';\r",
+							"\r",
+							"pm.variables.set(\"clientFinClusiveID\", encodeURIComponent(clientFinClusiveID));\r",
+							"pm.variables.set(\"significantPartyID\", encodeURIComponent(significantPartyID));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/Order?CurrentPage=1&PageSize=10&Order=Desc(HappenedAt)&ClientFinClusiveID={{clientFinClusiveID}}&SignificantPartyID={{significantPartyID}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"Order"
+					],
+					"query": [
+						{
+							"key": "CurrentPage",
+							"value": "1"
+						},
+						{
+							"key": "PageSize",
+							"value": "10"
+						},
+						{
+							"key": "Order",
+							"value": "Desc(HappenedAt)"
+						},
+						{
+							"key": "ClientFinClusiveID",
+							"value": "{{clientFinClusiveID}}"
+						},
+						{
+							"key": "SignificantPartyID",
+							"value": "{{significantPartyID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authAccessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.request.headers.add({",
+					"  key: \"Ocp-Apim-Subscription-Key\",",
+					"  value: \"{{finClusiveApimSubscriptionKey}}\"",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

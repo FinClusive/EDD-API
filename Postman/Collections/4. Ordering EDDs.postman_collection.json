@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "7fbba052-5124-4c42-b1d2-0f6ec6cc2fb6",
+		"name": "4. Ordering EDDs",
+		"description": "APIs for Ordering EDDs\n\nThe **IDTags** required for building the EDD order **request body JSON**, are obtained by using the **Browse EDD Order Components** API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4698006"
+	},
+	"item": [
+		{
+			"name": "Request EDD for Client",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let clientFinClusiveID = '';\r",
+							"\r",
+							"pm.variables.set(\"clientFinClusiveID\", clientFinClusiveID);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"CustomerFinClusiveID\": \"{{customerFinClusiveID}}\",\r\n    \"ClientFinClusiveID\": \"{{clientFinClusiveID}}\",\r\n    \"Products\": [\r\n        {\r\n            \"ProductIDTag\":\"OverviewAndOrganizationSummary\",\r\n            \"GroupIDTag\":\"EddRequiredVerifications\",\r\n            \"OngoingMonitoringRecurrenceIDTag\":null,\r\n            \"RevalidationRecurrenceIDTag\":\"Never\"\r\n        },\r\n        {\r\n            \"ProductIDTag\":\"BeneficialOwnersReview\",\r\n            \"GroupIDTag\":\"EddRequiredVerifications\",\r\n            \"OngoingMonitoringRecurrenceIDTag\":null,\r\n            \"RevalidationRecurrenceIDTag\":\"Never\"\r\n        },\r\n        {\r\n            \"ProductIDTag\":\"RiskScoreProofScore\",\r\n            \"GroupIDTag\":\"EddRequiredVerifications\",\r\n            \"OngoingMonitoringRecurrenceIDTag\":null,\r\n            \"RevalidationRecurrenceIDTag\":\"Never\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/Order",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"Order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request EDD for Client's Sig Party",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let clientFinClusiveID = '';\r",
+							"let significantPartyID = '';\r",
+							"\r",
+							"pm.variables.set(\"clientFinClusiveID\", clientFinClusiveID);\r",
+							"pm.variables.set(\"significantPartyID\", significantPartyID);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"CustomerFinClusiveID\": \"{{customerFinClusiveID}}\",\r\n    \"ClientFinClusiveID\": \"{{clientFinClusiveID}}\",\r\n    \"SignificantPartyID\": \"{{significantPartyID}}\",\r\n    \"Products\": [\r\n        {\r\n            \"ProductIDTag\":\"OverviewAndOrganizationSummary\",\r\n            \"GroupIDTag\":\"EddRequiredVerifications\",\r\n            \"OngoingMonitoringRecurrenceIDTag\":null,\r\n            \"RevalidationRecurrenceIDTag\":\"Never\"\r\n        },\r\n        {\r\n            \"ProductIDTag\":\"BeneficialOwnersReview\",\r\n            \"GroupIDTag\":\"EddRequiredVerifications\",\r\n            \"OngoingMonitoringRecurrenceIDTag\":null,\r\n            \"RevalidationRecurrenceIDTag\":\"Never\"\r\n        },\r\n        {\r\n            \"ProductIDTag\":\"RiskScoreProofScore\",\r\n            \"GroupIDTag\":\"EddRequiredVerifications\",\r\n            \"OngoingMonitoringRecurrenceIDTag\":null,\r\n            \"RevalidationRecurrenceIDTag\":\"Never\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/Order",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"Order"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authAccessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.request.headers.add({",
+					"  key: \"Ocp-Apim-Subscription-Key\",",
+					"  value: \"{{finClusiveApimSubscriptionKey}}\"",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

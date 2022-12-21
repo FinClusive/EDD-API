@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "87950c19-0b22-4ef0-ae12-e17f855b2449",
+		"name": "5. Browse Results",
+		"description": "This collection contains the APIs for browsing my EDD orders",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4698006"
+	},
+	"item": [
+		{
+			"name": "Full Results for EDD",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//Obtained via the Browse ALL My EDDs API\r",
+							"\r",
+							"let orderID = '';\r",
+							"\r",
+							"pm.variables.set(\"orderID\", encodeURIComponent(orderID));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/Order/{{orderID}}/result",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"Order",
+						"{{orderID}}",
+						"result"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download EDD Results Attached Document",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//Obtained via the Full Results for EDD API\r",
+							"\r",
+							"let documentId = '';\r",
+							"\r",
+							"pm.variables.set(\"documentId\", encodeURIComponent(documentId));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/Order/document/{{documentId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"Order",
+						"document",
+						"{{documentId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authAccessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.request.headers.add({",
+					"  key: \"Ocp-Apim-Subscription-Key\",",
+					"  value: \"{{finClusiveApimSubscriptionKey}}\"",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

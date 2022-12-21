@@ -1,0 +1,127 @@
+{
+	"info": {
+		"_postman_id": "e13f497e-b69a-4f67-b3a3-4c5b825c09bc",
+		"name": "2. Browse Prerequisites",
+		"description": "This collection contains the APIs required for prerequsite data needed for EDD ordering.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4698006"
+	},
+	"item": [
+		{
+			"name": "Browse EDD Order Components",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/Product/EddComponents",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"Product",
+						"EddComponents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[OPTIONAL] Browse All My Clients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseCustomerUrl}}/{{customerFinClusiveID}}/client/all?pageNo=1&pageSize=10&sortBy=Asc(Name)",
+					"host": [
+						"{{baseCustomerUrl}}"
+					],
+					"path": [
+						"{{customerFinClusiveID}}",
+						"client",
+						"all"
+					],
+					"query": [
+						{
+							"key": "pageNo",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "sortBy",
+							"value": "Asc(Name)"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[OPTIONAL] Browse A Specific Client Details",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let clientFinClusiveID = '';\r",
+							"\r",
+							"pm.variables.set(\"clientFinClusiveID\", clientFinClusiveID);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseCustomerUrl}}/{{customerFinClusiveID}}/client/{{clientFinClusiveID}}",
+					"host": [
+						"{{baseCustomerUrl}}"
+					],
+					"path": [
+						"{{customerFinClusiveID}}",
+						"client",
+						"{{clientFinClusiveID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authAccessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.request.headers.add({",
+					"  key: \"Ocp-Apim-Subscription-Key\",",
+					"  value: \"{{finClusiveApimSubscriptionKey}}\"",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
